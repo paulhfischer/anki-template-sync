@@ -1,9 +1,9 @@
 {
-    "display_name": "AnkiTemplateSync",
-    "module_name": "anki_template_sync",
-    "repo_name": "anki-template-sync",
-    "ankiweb_id": "n/a",
-    "author": "Paul Fischer",
-    "conflicts": [],
-    "targets": ["anki21"]
+  "display_name": "AnkiTemplateSync",
+  "module_name": "anki_template_sync",
+  "repo_name": "anki-template-sync",
+  "ankiweb_id": "n/a",
+  "author": "Paul Fischer",
+  "conflicts": [],
+  "targets": ["anki21"]
 }

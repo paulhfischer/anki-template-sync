@@ -1,7 +1,7 @@
 from __future__ import annotations
-import os
 
-from typing import NamedTuple, Optional
+import os
+from typing import NamedTuple
 
 
 class Template(NamedTuple):
@@ -18,14 +18,20 @@ class Template(NamedTuple):
     browser_font_type: str = ""
     browser_font_size: int = 0
 
-    default_deck_id: Optional[int] = None
+    default_deck_id: int | None = None
 
     @classmethod
     def from_dict(cls, data: dict, folder: str) -> Template:
-        with open(os.path.join(folder, data.get("frontFile", f"card_{data['id']}_front.html")), encoding="utf-8") as f:
+        with open(
+            os.path.join(folder, data.get("frontFile", f"card_{data['id']}_front.html")),
+            encoding="utf-8",
+        ) as f:
             question = f.read()
 
-        with open(os.path.join(folder, data.get("frontFile", f"card_{data['id']}_back.html")), encoding="utf-8") as f:
+        with open(
+            os.path.join(folder, data.get("frontFile", f"card_{data['id']}_back.html")),
+            encoding="utf-8",
+        ) as f:
             answer = f.read()
 
         return Template(

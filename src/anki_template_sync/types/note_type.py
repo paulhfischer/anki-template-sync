@@ -1,7 +1,8 @@
 from __future__ import annotations
-import os
 
-from typing import Literal, NamedTuple, Optional
+import os
+from typing import Literal
+from typing import NamedTuple
 
 from anki_template_sync.types.field import Field
 from anki_template_sync.types.template import Template
@@ -26,7 +27,7 @@ class NoteType(NamedTuple):
     id: int = 0
     modification_time: int = 0
     update_sequence_number: int = 0
-    default_deck_id: Optional[int] = None
+    default_deck_id: int | None = None
     required_fields: list = []
     original_stock_kind: int = 1
 
@@ -57,7 +58,7 @@ class NoteType(NamedTuple):
 
         type = {
             "normal": 0,
-            "cloze": 1
+            "cloze": 1,
         }[self.type]
 
         return {
