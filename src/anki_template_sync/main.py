@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
-import tempfile
 from collections.abc import Generator
 from contextlib import contextmanager
 from typing import Literal
@@ -91,11 +91,20 @@ def _update_or_create(note_type: NoteType) -> Literal["update", "create", "skip"
 
 
 @contextmanager
-def _clone_repository(url: str) -> Generator[str, None, None]:
-    with tempfile.TemporaryDirectory() as tmpdir:
-        subprocess.check_call(("git", "clone", url, tmpdir))
+def _empty_template_directory() -> Generator[str, None, None]:
+    addons_path = mw.addonManager.addonsFolder()
+    userfiles_path = os.path.join(addons_path, "user_files")
+    templates_path = os.path.join(userfiles_path, "templates")
 
-        yield tmpdir
+    if os.path.exists(templates_path):
+        shutil.rmtree(templates_path)
+    os.makedirs(templates_path)
+
+    yield templates_path
+
+
+def _clone_repository(url: str, directory: str) -> None:
+    subprocess.check_call(("git", "clone", url, directory))
 
 
 def main() -> None:
@@ -105,7 +114,9 @@ def main() -> None:
     num_updated = 0
     num_created = 0
 
-    with _clone_repository(REPOSITORY_URL) as models_dir:
+    with _empty_template_directory() as models_dir:
+        _clone_repository(REPOSITORY_URL, models_dir)
+
         for note_type in _note_types(models_dir):
             operation = _update_or_create(note_type)
 
