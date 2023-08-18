@@ -9,11 +9,10 @@ from contextlib import contextmanager
 from typing import Literal
 
 from aqt import mw
+from aqt.utils import showCritical
 from aqt.utils import showInfo
 
 from anki_template_sync.types.note_type import NoteType
-
-REPOSITORY_URL = "https://www.github.com/paulhfischer/anki-templates"
 
 
 def _note_types(directory: str) -> Generator[NoteType, None, None]:
@@ -108,6 +107,12 @@ def _clone_repository(url: str, directory: str) -> None:
 
 
 def main() -> None:
+    repository_url = mw.addonManager.getConfig(__name__)["repository"]
+
+    if not repository_url:
+        showCritical("No template repository configured!")
+        return
+
     mw.checkpoint("Update Templates")
     mw.progress.start()
 
@@ -115,7 +120,7 @@ def main() -> None:
     num_created = 0
 
     with _empty_template_directory() as models_dir:
-        _clone_repository(REPOSITORY_URL, models_dir)
+        _clone_repository(repository_url, models_dir)
 
         for note_type in _note_types(models_dir):
             operation = _update_or_create(note_type)
