@@ -11,8 +11,9 @@ class Field(NamedTuple):
 
     exclude_from_search: bool
 
+    collapsed: bool
+
     sticky: bool = False
-    collapsed: bool = False
 
     font_type: str = "Verdana"
     font_size: int = 20
@@ -26,6 +27,7 @@ class Field(NamedTuple):
             name=data["name"],
             description=data.get("description", ""),
             exclude_from_search=data.get("excludeFromSearch", False),
+            collapsed=data.get("collapsed", False),
         )
 
     def to_dict(self) -> dict:
